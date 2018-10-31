@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "parcel-bundler": "^1.10.3"
+    "parcel-bundler": "^1.10.3",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "styled-components": "^4.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "^1.14.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel ./client/public/index.html"
