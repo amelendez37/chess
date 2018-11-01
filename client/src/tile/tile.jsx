@@ -8,9 +8,7 @@ const Container = Styled.div`
 `;
 
 const Board = ({ Piece, color }) => (
-  <Container color={color}>
-    <Piece />
-  </Container>
+  <Container color={color}>{Piece ? <Piece /> : null}</Container>
 );
 
 export default Board;

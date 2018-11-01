@@ -16,5 +16,5 @@ export const BLACK_KING = () => <Container>&#9818;</Container>;
 export const BLACK_QUEEN = () => <Container>&#9819;</Container>;
 export const BLACK_ROOK = () => <Container>&#9820;</Container>;
 export const BLACK_BISHOP = () => <Container>&#9821;</Container>;
-export const BLACK_KNIGHT = () => <Container>&#9816;</Container>;
+export const BLACK_KNIGHT = () => <Container>&#9822;</Container>;
 export const BLACK_PAWN = () => <Container>&#9823;</Container>;
