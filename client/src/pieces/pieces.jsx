@@ -4,17 +4,68 @@ import Styled from "styled-components";
 const Container = Styled.div`
   text-align: center;
   font-size: 5rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-export const WHITE_KING = () => <Container>&#9812;</Container>;
-export const WHITE_QUEEN = () => <Container>&#9813;</Container>;
-export const WHITE_ROOK = () => <Container>&#9814;</Container>;
-export const WHITE_BISHOP = () => <Container>&#9815;</Container>;
-export const WHITE_KNIGHT = () => <Container>&#9816;</Container>;
-export const WHITE_PAWN = () => <Container>&#9817;</Container>;
-export const BLACK_KING = () => <Container>&#9818;</Container>;
-export const BLACK_QUEEN = () => <Container>&#9819;</Container>;
-export const BLACK_ROOK = () => <Container>&#9820;</Container>;
-export const BLACK_BISHOP = () => <Container>&#9821;</Container>;
-export const BLACK_KNIGHT = () => <Container>&#9822;</Container>;
-export const BLACK_PAWN = () => <Container>&#9823;</Container>;
+export const WHITE_KING = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9812;
+  </Container>
+);
+export const WHITE_QUEEN = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9813;
+  </Container>
+);
+export const WHITE_ROOK = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9814;
+  </Container>
+);
+export const WHITE_BISHOP = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9815;
+  </Container>
+);
+export const WHITE_KNIGHT = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9816;
+  </Container>
+);
+export const WHITE_PAWN = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9817;
+  </Container>
+);
+export const BLACK_KING = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9818;
+  </Container>
+);
+export const BLACK_QUEEN = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9819;
+  </Container>
+);
+export const BLACK_ROOK = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9820;
+  </Container>
+);
+export const BLACK_BISHOP = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9821;
+  </Container>
+);
+export const BLACK_KNIGHT = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9822;
+  </Container>
+);
+export const BLACK_PAWN = ({ row, col }) => (
+  <Container data-row={row} data-col={col}>
+    &#9823;
+  </Container>
+);

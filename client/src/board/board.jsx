@@ -31,14 +31,14 @@ const Container = Styled.div`
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.state = { board: [] };
+    this.state = { board: [] }; // each position should be object with entity and coordinates of piece
   }
 
   componentDidMount() {
-    this.setupBoard();
+    this.setupBoardDefault();
   }
 
-  setupBoard() {
+  setupBoardDefault() {
     const board = [];
 
     for (let i = 0; i < 8; i++) {
@@ -90,7 +90,13 @@ class Board extends Component {
       <Container>
         {this.state.board.map((row, i) =>
           row.map((Piece, j) => (
-            <Tile key={j} Piece={Piece} color={this.determineTileColor(i, j)} />
+            <Tile
+              row={i}
+              col={j}
+              key={j}
+              Piece={Piece}
+              color={this.determineTileColor(i, j)}
+            />
           ))
         )}
       </Container>

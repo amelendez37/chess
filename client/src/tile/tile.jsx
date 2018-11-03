@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import Styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Container = Styled.div`
     width: 12.5%;
@@ -7,8 +8,28 @@ const Container = Styled.div`
     background-color: ${props => props.color};
 `;
 
-const Board = ({ Piece, color }) => (
-  <Container color={color}>{Piece ? <Piece /> : null}</Container>
-);
+const Tile = ({ Piece, color, row, col }) => {
+  const handleTileClick = ({ target }) => {
+    console.log(target.dataset.row);
+  };
 
-export default Board;
+  return (
+    <Container
+      onClick={handleTileClick}
+      data-row={row}
+      data-col={col}
+      color={color}
+    >
+      {Piece ? <Piece row={row} col={col} /> : null}
+    </Container>
+  );
+};
+
+Tile.propTypes = {
+  Piece: PropTypes.func,
+  color: PropTypes.string.isRequired,
+  row: PropTypes.number.isRequired,
+  col: PropTypes.number.isRequired
+};
+
+export default Tile;
