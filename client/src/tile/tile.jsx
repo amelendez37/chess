@@ -8,22 +8,20 @@ const Container = Styled.div`
     background-color: ${props => props.color};
 `;
 
-const Tile = ({ Piece, color, row, col }) => {
-  const handleTileClick = ({ target }) => {
-    console.log(target.dataset.row);
-  };
-
-  return (
-    <Container
-      onClick={handleTileClick}
-      data-row={row}
-      data-col={col}
-      color={color}
-    >
-      {Piece ? <Piece row={row} col={col} /> : null}
-    </Container>
-  );
+const onDragOver = e => {
+  e.preventDefault();
 };
+
+const Tile = ({ Piece, color, row, col }) => (
+  <Container
+    onDragOver={onDragOver}
+    data-row={row}
+    data-col={col}
+    color={color}
+  >
+    {Piece ? <Piece row={row} col={col} /> : null}
+  </Container>
+);
 
 Tile.propTypes = {
   Piece: PropTypes.func,
