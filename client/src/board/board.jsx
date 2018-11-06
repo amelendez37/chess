@@ -32,6 +32,8 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = { board: [] }; // each position should be object with entity and coordinates of piece
+
+    this.updatePiecePositions = this.updatePiecePositions.bind(this);
   }
 
   componentDidMount() {
@@ -85,17 +87,25 @@ class Board extends Component {
     }
   }
 
+  updatePiecePositions(prevRow, prevCol, nextRow, nextCol) {
+    const board = this.state.board;
+    board[nextRow][nextCol] = board[prevRow][prevCol];
+    board[prevRow][prevCol] = null;
+    this.setState({ board });
+  }
+
   render() {
     return (
       <Container>
         {this.state.board.map((row, i) =>
           row.map((Piece, j) => (
             <Tile
+              key={j}
               row={i}
               col={j}
-              key={j}
               Piece={Piece}
               color={this.determineTileColor(i, j)}
+              updatePiecePositions={this.updatePiecePositions}
             />
           ))
         )}

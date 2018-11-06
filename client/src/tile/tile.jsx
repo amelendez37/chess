@@ -8,13 +8,20 @@ const Container = Styled.div`
     background-color: ${props => props.color};
 `;
 
-const onDragOver = e => {
+const onDragOverHandler = e => {
   e.preventDefault();
 };
 
-const Tile = ({ Piece, color, row, col }) => (
+const onDropHandler = (e, dropRow, dropCol, updatePiecePositions) => {
+  const row = e.dataTransfer.getData("row");
+  const col = e.dataTransfer.getData("col");
+  updatePiecePositions(row, col, dropRow, dropCol);
+};
+
+const Tile = ({ Piece, color, row, col, updatePiecePositions }) => (
   <Container
-    onDragOver={onDragOver}
+    onDrop={e => onDropHandler(e, row, col, updatePiecePositions)}
+    onDragOver={e => onDragOverHandler(e)}
     data-row={row}
     data-col={col}
     color={color}
@@ -27,7 +34,8 @@ Tile.propTypes = {
   Piece: PropTypes.func,
   color: PropTypes.string.isRequired,
   row: PropTypes.number.isRequired,
-  col: PropTypes.number.isRequired
+  col: PropTypes.number.isRequired,
+  updatePiecePositions: PropTypes.func.isRequired
 };
 
 export default Tile;

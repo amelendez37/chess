@@ -9,14 +9,15 @@ const Container = Styled.div`
   }
 `;
 
-const handleDragStart = () => {
-  console.log("dragging");
+const dragStartHandler = (e, row, col) => {
+  e.dataTransfer.setData("row", row);
+  e.dataTransfer.setData("col", col);
 };
 
 export const WHITE_KING = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -26,7 +27,7 @@ export const WHITE_KING = ({ row, col }) => (
 export const WHITE_QUEEN = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -36,7 +37,7 @@ export const WHITE_QUEEN = ({ row, col }) => (
 export const WHITE_ROOK = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -46,7 +47,7 @@ export const WHITE_ROOK = ({ row, col }) => (
 export const WHITE_BISHOP = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -56,7 +57,7 @@ export const WHITE_BISHOP = ({ row, col }) => (
 export const WHITE_KNIGHT = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -66,7 +67,7 @@ export const WHITE_KNIGHT = ({ row, col }) => (
 export const WHITE_PAWN = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -76,7 +77,7 @@ export const WHITE_PAWN = ({ row, col }) => (
 export const BLACK_KING = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -86,7 +87,7 @@ export const BLACK_KING = ({ row, col }) => (
 export const BLACK_QUEEN = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -96,7 +97,7 @@ export const BLACK_QUEEN = ({ row, col }) => (
 export const BLACK_ROOK = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -106,7 +107,7 @@ export const BLACK_ROOK = ({ row, col }) => (
 export const BLACK_BISHOP = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -116,7 +117,7 @@ export const BLACK_BISHOP = ({ row, col }) => (
 export const BLACK_KNIGHT = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
@@ -126,7 +127,7 @@ export const BLACK_KNIGHT = ({ row, col }) => (
 export const BLACK_PAWN = ({ row, col }) => (
   <Container
     draggable
-    onDragStart={handleDragStart}
+    onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
   >
