@@ -106,6 +106,7 @@ class Board extends Component {
               Piece={Piece}
               color={this.determineTileColor(i, j)}
               updatePiecePositions={this.updatePiecePositions}
+              board={this.state.board}
             />
           ))
         )}
