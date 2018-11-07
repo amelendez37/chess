@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Styled from "styled-components";
 import PropTypes from "prop-types";
 
+import { isValidMove } from "../helpers/gameHelpers.js";
+
 const Container = Styled.div`
     width: 12.5%;
     height: 12.5%;
@@ -15,7 +17,11 @@ const onDragOverHandler = e => {
 const onDropHandler = (e, dropRow, dropCol, updatePiecePositions) => {
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
-  updatePiecePositions(row, col, dropRow, dropCol);
+  const type = e.dataTransfer.getData("type");
+
+  if (isValidMove(row, col, dropRow, dropCol, type)) {
+    updatePiecePositions(row, col, dropRow, dropCol);
+  }
 };
 
 const Tile = ({ Piece, color, row, col, updatePiecePositions }) => (
