@@ -152,11 +152,30 @@ const isValidBishopMove = (
   dropRow,
   dropCol,
   friendlySide,
-  enemySide
+  enemySide,
+  board
 ) => {
-  const x = Math.abs(dropRow - row);
-  const y = Math.abs(dropCol - col);
-  return x == y;
+  const rowShift = Math.abs(dropRow - row);
+  const colShift = Math.abs(dropCol - col);
+
+  // check that it is not killing a friendly
+  if (friendlySide === enemySide) {
+    return false;
+  }
+
+  // check for collisions between start and end tile
+  while (row !== dropRow && col !== dropCol) {
+    // move in correct row direction
+    dropRow - row > 0 ? row++ : row--;
+    // move in correct col direction
+    dropCol - col > 0 ? col++ : col--;
+
+    if (board[row][col] && row !== dropRow) {
+      return false;
+    }
+  }
+
+  return rowShift == colShift;
 };
 
 const isValidKnightMove = (
@@ -171,6 +190,7 @@ const isValidKnightMove = (
   const rowShift = Math.abs(dropRow - row);
   const colShift = Math.abs(dropCol - col);
 
+  // check that it is an enemy
   if (friendlySide !== enemySide) {
     validMove = true;
   }
@@ -193,6 +213,7 @@ const isValidPawnMove = (
   let validDirection;
   let validMove;
 
+  // set validDirection based on pawn side
   if (friendlySide == "white") {
     validDirection = dropRow - row == -1;
   } else {
