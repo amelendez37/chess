@@ -167,9 +167,18 @@ const isValidKnightMove = (
   friendlySide,
   enemySide
 ) => {
-  const x = Math.abs(dropRow - row);
-  const y = Math.abs(dropCol - col);
-  return (x == 2 && y == 1) || (x == 1 && y == 2);
+  let validMove;
+  const rowShift = Math.abs(dropRow - row);
+  const colShift = Math.abs(dropCol - col);
+
+  if (friendlySide !== enemySide) {
+    validMove = true;
+  }
+
+  return (
+    validMove &&
+    ((rowShift == 2 && colShift == 1) || (rowShift == 1 && colShift == 2))
+  );
 };
 
 const isValidPawnMove = (
