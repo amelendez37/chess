@@ -31,8 +31,7 @@ const Container = Styled.div`
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.state = { board: [] }; // each position should be object with entity and coordinates of piece
-
+    this.state = { board: [] };
     this.updatePiecePositions = this.updatePiecePositions.bind(this);
   }
 

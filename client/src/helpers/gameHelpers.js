@@ -48,10 +48,16 @@ export const isValidMove = (
   }
 };
 
-const isValidKingMove = (row, col, dropRow, dropCol) => {
+const isValidKingMove = (row, col, dropRow, dropCol, board) => {
+  // check that drop position does not make king attackable
+  const attackableAtPos =
+    inPawnKingRange(dropRow, dropCol, board) ||
+    inRookRange(dropRow, dropCol, board) ||
+    inKnightRange(dropRow, dropCol, board) ||
+    inBishopRange(dropRow, dropCol, board);
   const x = Math.abs(dropRow - row);
   const y = Math.abs(dropCol - col);
-  return x + y == 1 || (x == 1 && y == 1);
+  return !attackableAtPos && (x + y == 1 || (x == 1 && y == 1));
 };
 
 const isValidQueenMove = (row, col, dropRow, dropCol, board) =>
@@ -131,4 +137,20 @@ const isValidLinearMove = (row, col, dropRow, dropCol, board) => {
   }
 
   return rowDiff == 0 || colDiff == 0;
+};
+
+const inPawnKingRange = (dropRow, dropCol, board) => {
+  return false;
+};
+
+const inRookRange = (dropRow, dropCol, board) => {
+  return false;
+};
+
+const inKnightRange = (dropRow, dropCol, board) => {
+  return false;
+};
+
+const inBishopRange = (dropRow, dropCol, board) => {
+  return false;
 };
