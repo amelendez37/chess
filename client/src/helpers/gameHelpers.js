@@ -118,32 +118,12 @@ const isValidRookMove = (
   enemySide,
   board
 ) => {
-  const rowDiff = Math.abs(dropRow - row);
-  const colDiff = Math.abs(dropCol - col);
-
   // check if piece at drop point and if piece is an enemy or friendly
   if (enemySide && friendlySide && enemySide === friendlySide) {
     return false;
   }
 
-  // check if any pieces between current and drop point
-  if (rowDiff > 0) {
-    while (row !== dropRow) {
-      row < dropRow ? row++ : row--;
-      if (board[row][col] && row !== dropRow) {
-        return false;
-      }
-    }
-  } else {
-    while (col !== dropCol) {
-      col < dropCol ? col++ : col--;
-      if (board[row][col] && col !== dropCol) {
-        return false;
-      }
-    }
-  }
-
-  return rowDiff == 0 || colDiff == 0;
+  return isValidLinearMove(row, col, dropRow, dropCol, board);
 };
 
 const isValidBishopMove = (
@@ -155,27 +135,12 @@ const isValidBishopMove = (
   enemySide,
   board
 ) => {
-  const rowShift = Math.abs(dropRow - row);
-  const colShift = Math.abs(dropCol - col);
-
   // check that it is not killing a friendly
   if (friendlySide === enemySide) {
     return false;
   }
 
-  // check for collisions between start and end tile
-  while (row !== dropRow && col !== dropCol) {
-    // move in correct row direction
-    dropRow - row > 0 ? row++ : row--;
-    // move in correct col direction
-    dropCol - col > 0 ? col++ : col--;
-
-    if (board[row][col] && row !== dropRow) {
-      return false;
-    }
-  }
-
-  return rowShift == colShift;
+  return isValidDiagonalCollision(row, col, dropRow, dropCol, board);
 };
 
 const isValidKnightMove = (
@@ -228,4 +193,47 @@ const isValidPawnMove = (
   }
 
   return validDirection && validMove;
+};
+
+const isValidDiagonalCollision = (row, col, dropRow, dropCol, board) => {
+  const rowShift = Math.abs(dropRow - row);
+  const colShift = Math.abs(dropCol - col);
+
+  // check for collisions between start and end tile
+  while (row !== dropRow && col !== dropCol) {
+    // move in correct row direction
+    dropRow - row > 0 ? row++ : row--;
+    // move in correct col direction
+    dropCol - col > 0 ? col++ : col--;
+
+    if (board[row][col] && row !== dropRow) {
+      return false;
+    }
+  }
+
+  return rowShift == colShift;
+};
+
+const isValidLinearMove = (row, col, dropRow, dropCol, board) => {
+  const rowDiff = Math.abs(dropRow - row);
+  const colDiff = Math.abs(dropCol - col);
+
+  // check if any pieces between current and drop point
+  if (rowDiff > 0) {
+    while (row !== dropRow) {
+      row < dropRow ? row++ : row--;
+      if (board[row][col] && row !== dropRow) {
+        return false;
+      }
+    }
+  } else {
+    while (col !== dropCol) {
+      col < dropCol ? col++ : col--;
+      if (board[row][col] && col !== dropCol) {
+        return false;
+      }
+    }
+  }
+
+  return rowDiff == 0 || colDiff == 0;
 };
