@@ -46,29 +46,29 @@ class Board extends Component {
       board.push([]);
       for (let j = 0; j < 8; j++) {
         if (i == 1) {
-          board[i].push(BLACK_PAWN);
+          board[i].push({ piece: BLACK_PAWN, side: "black", type: "pawn" });
         } else if (i == 0 && (j == 0 || j == 7)) {
-          board[i].push(BLACK_ROOK);
+          board[i].push({ piece: BLACK_ROOK, side: "black", type: "rook" });
         } else if (i == 0 && (j == 1 || j == 6)) {
-          board[i].push(BLACK_KNIGHT);
+          board[i].push({ piece: BLACK_KNIGHT, side: "black", type: "knight" });
         } else if (i == 0 && (j == 2 || j == 5)) {
-          board[i].push(BLACK_BISHOP);
+          board[i].push({ piece: BLACK_BISHOP, side: "black", type: "bishop" });
         } else if (i == 0 && j == 3) {
-          board[i].push(BLACK_QUEEN);
+          board[i].push({ piece: BLACK_QUEEN, side: "black", type: "queen" });
         } else if (i == 0 && j == 4) {
-          board[i].push(BLACK_KING);
+          board[i].push({ piece: BLACK_KING, side: "black", type: "king" });
         } else if (i == 6) {
-          board[i].push(WHITE_PAWN);
+          board[i].push({ piece: WHITE_PAWN, side: "white", type: "pawn" });
         } else if (i == 7 && (j == 0 || j == 7)) {
-          board[i].push(WHITE_ROOK);
+          board[i].push({ piece: WHITE_ROOK, side: "white", type: "rook" });
         } else if (i == 7 && (j == 1 || j == 6)) {
-          board[i].push(WHITE_KNIGHT);
+          board[i].push({ piece: WHITE_KNIGHT, side: "white", type: "knight" });
         } else if (i == 7 && (j == 2 || j == 5)) {
-          board[i].push(WHITE_BISHOP);
+          board[i].push({ piece: WHITE_BISHOP, side: "white", type: "bishop" });
         } else if (i == 7 && j == 3) {
-          board[i].push(WHITE_QUEEN);
+          board[i].push({ piece: WHITE_QUEEN, side: "white", type: "queen" });
         } else if (i == 7 && j == 4) {
-          board[i].push(WHITE_KING);
+          board[i].push({ piece: WHITE_KING, side: "white", type: "king" });
         } else {
           board[i].push(null);
         }

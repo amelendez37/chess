@@ -22,8 +22,6 @@ export const WHITE_KING = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"king"}
-    data-side={"white"}
   >
     &#9812;
   </Container>
@@ -34,8 +32,6 @@ export const WHITE_QUEEN = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"queen"}
-    data-side={"white"}
   >
     &#9813;
   </Container>
@@ -46,8 +42,6 @@ export const WHITE_ROOK = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"rook"}
-    data-side={"white"}
   >
     &#9814;
   </Container>
@@ -58,8 +52,6 @@ export const WHITE_BISHOP = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"bishop"}
-    data-side={"white"}
   >
     &#9815;
   </Container>
@@ -70,8 +62,6 @@ export const WHITE_KNIGHT = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"knight"}
-    data-side={"white"}
   >
     &#9816;
   </Container>
@@ -83,8 +73,6 @@ export const WHITE_PAWN = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"pawn"}
-    data-side={"white"}
   >
     &#9817;
   </Container>
@@ -96,8 +84,6 @@ export const BLACK_KING = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"king"}
-    data-side={"black"}
   >
     &#9818;
   </Container>
@@ -109,8 +95,6 @@ export const BLACK_QUEEN = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"queen"}
-    data-side={"black"}
   >
     &#9819;
   </Container>
@@ -122,8 +106,6 @@ export const BLACK_ROOK = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"rook"}
-    data-side={"black"}
   >
     &#9820;
   </Container>
@@ -135,8 +117,6 @@ export const BLACK_BISHOP = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"bishop"}
-    data-side={"black"}
   >
     &#9821;
   </Container>
@@ -148,8 +128,6 @@ export const BLACK_KNIGHT = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"knight"}
-    data-side={"black"}
   >
     &#9822;
   </Container>
@@ -161,8 +139,6 @@ export const BLACK_PAWN = ({ row, col }) => (
     onDragStart={e => dragStartHandler(e, row, col)}
     data-row={row}
     data-col={col}
-    data-type={"pawn"}
-    data-side={"black"}
   >
     &#9823;
   </Container>

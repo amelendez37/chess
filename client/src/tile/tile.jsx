@@ -15,11 +15,15 @@ const onDragOverHandler = e => {
 };
 
 const onDropHandler = (e, dropRow, dropCol, updatePiecePositions, board) => {
+  let enemy;
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
-  const type = e.dataTransfer.getData("type");
-  const friendly = e.dataTransfer.getData("side");
-  const enemy = e.target.dataset.side;
+  const type = board[row][col].type;
+  const friendly = board[row][col].side;
+
+  if (board[dropRow][dropCol]) {
+    enemy = board[dropRow][dropCol].side;
+  }
 
   if (isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board)) {
     updatePiecePositions(row, col, dropRow, dropCol);
@@ -34,12 +38,12 @@ const Tile = ({ Piece, color, row, col, updatePiecePositions, board }) => (
     data-col={col}
     color={color}
   >
-    {Piece ? <Piece row={row} col={col} /> : null}
+    {Piece ? <Piece.piece row={row} col={col} /> : null}
   </Container>
 );
 
 Tile.propTypes = {
-  Piece: PropTypes.func,
+  Piece: PropTypes.object,
   color: PropTypes.string.isRequired,
   row: PropTypes.number.isRequired,
   col: PropTypes.number.isRequired,
