@@ -18,21 +18,10 @@ const onDropHandler = (e, dropRow, dropCol, updatePiecePositions, board) => {
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
   const type = e.dataTransfer.getData("type");
-  const friendlySide = e.dataTransfer.getData("side");
-  const enemySide = e.target.dataset.side;
+  const friendly = e.dataTransfer.getData("side");
+  const enemy = e.target.dataset.side;
 
-  if (
-    isValidMove(
-      row,
-      col,
-      dropRow,
-      dropCol,
-      type,
-      friendlySide,
-      enemySide,
-      board
-    )
-  ) {
+  if (isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board)) {
     updatePiecePositions(row, col, dropRow, dropCol);
   }
 };
