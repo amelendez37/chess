@@ -147,7 +147,7 @@ const inPawnKingRange = (dropRow, dropCol, friendly, board) => {
   // check that no spots surrounding drop are in range of enemy king
   for (let row = dropRow - 1; row < dropRow + 2; row++) {
     for (let col = dropCol - 1; col < dropCol + 2; col++) {
-      let current = board[row][col];
+      let current = board[row] && board[row][col];
       if (current && current.type === "king" && current.side !== friendly) {
         return true;
       }
@@ -214,7 +214,20 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
 };
 
 const inKnightRange = (dropRow, dropCol, friendly, board) => {
-  return false;
+  const knightPositions = [];
+  // keep track of possible enemy knight positions
+  knightPositions.push(board[dropRow - 2] && board[dropRow - 2][dropCol - 1]);
+  knightPositions.push(board[dropRow - 2] && board[dropRow - 2][dropCol + 1]);
+  knightPositions.push(board[dropRow - 1] && board[dropRow - 1][dropCol - 2]);
+  knightPositions.push(board[dropRow - 1] && board[dropRow - 1][dropCol + 2]);
+  knightPositions.push(board[dropRow + 2] && board[dropRow + 2][dropCol - 1]);
+  knightPositions.push(board[dropRow + 2] && board[dropRow + 2][dropCol + 1]);
+  knightPositions.push(board[dropRow + 1] && board[dropRow + 1][dropCol - 2]);
+  knightPositions.push(board[dropRow + 1] && board[dropRow + 1][dropCol + 2]);
+  // check that any of the positions contain an enemy knight
+  return knightPositions.some(
+    spot => spot && spot.type === "knight" && spot.side !== friendly
+  );
 };
 
 const inBishopRange = (dropRow, dropCol, friendly, board) => {
