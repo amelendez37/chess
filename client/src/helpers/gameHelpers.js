@@ -49,12 +49,13 @@ export const isValidMove = (
 };
 
 const isValidKingMove = (row, col, dropRow, dropCol, board) => {
+  const friendly = board[row][col].side;
   // check that drop position does not make king attackable
   const attackableAtPos =
-    inPawnKingRange(dropRow, dropCol, board) ||
-    inRookRange(dropRow, dropCol, board) ||
-    inKnightRange(dropRow, dropCol, board) ||
-    inBishopRange(dropRow, dropCol, board);
+    inPawnKingRange(dropRow, dropCol, friendly, board) ||
+    inRookRange(dropRow, dropCol, friendly, board) ||
+    inKnightRange(dropRow, dropCol, friendly, board) ||
+    inBishopRange(dropRow, dropCol, friendly, board);
   const x = Math.abs(dropRow - row);
   const y = Math.abs(dropCol - col);
   return !attackableAtPos && (x + y == 1 || (x == 1 && y == 1));
@@ -139,18 +140,45 @@ const isValidLinearMove = (row, col, dropRow, dropCol, board) => {
   return rowDiff == 0 || colDiff == 0;
 };
 
-const inPawnKingRange = (dropRow, dropCol, board) => {
+/**
+ * Checks whether the drop position would expose king to attack from pawns or enemy king
+ */
+const inPawnKingRange = (dropRow, dropCol, friendly, board) => {
+  // check that no spots surrounding drop are in range of enemy king
+  for (let row = dropRow - 1; row < dropRow + 2; row++) {
+    for (let col = dropCol - 1; col < dropCol + 2; col++) {
+      let current = board[row][col];
+      if (current && current.type === "king" && current.side !== friendly) {
+        return true;
+      }
+    }
+  }
+  // check that drop spot is not in range of enemy pawns
+  if (friendly === "white") {
+    let left = board[dropRow - 1][dropCol - 1];
+    let right = board[dropRow - 1][dropCol + 1];
+    let isLeftEnemyPawn = left && left.type === "pawn" && left.side === "black";
+    let isRightEnemyPawn =
+      right && right.type === "pawn" && right.side === "black";
+    return isLeftEnemyPawn || isRightEnemyPawn;
+  } else {
+    let left = board[dropRow + 1][dropCol - 1];
+    let right = board[dropRow + 1][dropCol + 1];
+    let isLeftEnemyPawn = left && left.type === "pawn" && left.side === "white";
+    let isRightEnemyPawn =
+      right && right.type === "pawn" && right.side === "white";
+    return isLeftEnemyPawn || isRightEnemyPawn;
+  }
+};
+
+const inRookRange = (dropRow, dropCol, friendly, board) => {
   return false;
 };
 
-const inRookRange = (dropRow, dropCol, board) => {
+const inKnightRange = (dropRow, dropCol, friendly, board) => {
   return false;
 };
 
-const inKnightRange = (dropRow, dropCol, board) => {
-  return false;
-};
-
-const inBishopRange = (dropRow, dropCol, board) => {
+const inBishopRange = (dropRow, dropCol, friendly, board) => {
   return false;
 };
