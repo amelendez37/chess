@@ -37,13 +37,13 @@ export const isValidMove = (
     case "king":
       return isValidKingMove(row, col, dropRow, dropCol, board);
     case "queen":
-      return isValidQueenMove(row, col, dropRow, dropCol, board);
+      return isValidQueenMove(row, col, dropRow, dropCol, friendly, board);
     case "rook":
-      return isValidRookMove(row, col, dropRow, dropCol, board);
+      return isValidRookMove(row, col, dropRow, dropCol, friendly, board);
     case "bishop":
-      return isValidBishopMove(row, col, dropRow, dropCol, board);
+      return isValidBishopMove(row, col, dropRow, dropCol, friendly, board);
     case "knight":
-      return isValidKnightMove(row, col, dropRow, dropCol, board);
+      return isValidKnightMove(row, col, dropRow, dropCol, friendly, board);
     case "pawn":
       return isValidPawnMove(
         row,
@@ -70,21 +70,27 @@ const isValidKingMove = (row, col, dropRow, dropCol, board) => {
   return !attackableAtPos && (x + y == 1 || (x == 1 && y == 1));
 };
 
-const isValidQueenMove = (row, col, dropRow, dropCol, board) =>
-  isValidLinearMove(row, col, dropRow, dropCol, board) ||
-  isValidDiagonalMove(row, col, dropRow, dropCol, board);
+const isValidQueenMove = (row, col, dropRow, dropCol, friendly, board) =>
+  (isValidLinearMove(row, col, dropRow, dropCol, board) ||
+    isValidDiagonalMove(row, col, dropRow, dropCol, board)) &&
+  !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
 
-const isValidRookMove = (row, col, dropRow, dropCol, board) =>
-  isValidLinearMove(row, col, dropRow, dropCol, board);
+const isValidRookMove = (row, col, dropRow, dropCol, friendly, board) =>
+  isValidLinearMove(row, col, dropRow, dropCol, board) &&
+  !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
 
-const isValidBishopMove = (row, col, dropRow, dropCol, board) =>
-  isValidDiagonalMove(row, col, dropRow, dropCol, board);
+const isValidBishopMove = (row, col, dropRow, dropCol, friendly, board) =>
+  isValidDiagonalMove(row, col, dropRow, dropCol, board) &&
+  !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
 
-const isValidKnightMove = (row, col, dropRow, dropCol) => {
+const isValidKnightMove = (row, col, dropRow, dropCol, friendly, board) => {
   const rowShift = Math.abs(dropRow - row);
   const colShift = Math.abs(dropCol - col);
 
-  return (rowShift == 2 && colShift == 1) || (rowShift == 1 && colShift == 2);
+  return (
+    ((rowShift == 2 && colShift == 1) || (rowShift == 1 && colShift == 2)) &&
+    !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board)
+  );
 };
 
 const isValidPawnMove = (
@@ -115,7 +121,7 @@ const isValidPawnMove = (
   if (validDirection && (validDouble || validSingle)) {
     // increment moves pawn has made
     board[row][col].moves += 1;
-    return true;
+    return !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
   } else {
     return false;
   }
@@ -165,6 +171,45 @@ const isValidLinearMove = (row, col, dropRow, dropCol, board) => {
 };
 
 /**
+ * Checks to see if specified King piece is in check
+ * @param {Number} row - row index of piece to move
+ * @param {Number} col - col index of piece to move
+ * @param {Number} dropRow - row index of piece to move to
+ * @param {Number} dropCol - col index of piece to move to
+ * @param {String} friendly - 'white' or 'black'
+ * @param {Array} board
+ */
+const wouldCauseKingCheck = (row, col, dropRow, dropCol, friendly, board) => {
+  const boardCopy = board.map(row => row.slice(0));
+  // move piece to be moved
+  boardCopy[dropRow][dropCol] = boardCopy[row][col];
+  boardCopy[row][col] = null;
+  // get index of friendly king
+  const { kingRow, kingCol } = findKingPosition(friendly, boardCopy);
+  // check for possible collisions
+  return (
+    inPawnKingRange(kingRow, kingCol, friendly, boardCopy) ||
+    inRookRange(kingRow, kingCol, friendly, boardCopy) ||
+    inKnightRange(kingRow, kingCol, friendly, boardCopy) ||
+    inBishopRange(kingRow, kingCol, friendly, boardCopy)
+  );
+};
+
+/**
+ * Finds King index of provided side
+ */
+const findKingPosition = (side, board) => {
+  for (let row = 0; row < board.length; row++) {
+    for (let col = 0; col < board[0].length; col++) {
+      let current = board[row][col];
+      if (current && current.type === "king" && current.side === side) {
+        return { kingRow: row, kingCol: col };
+      }
+    }
+  }
+};
+
+/**
  * Following four functions are used to ensure a king cannot move itself into check
  */
 const inPawnKingRange = (dropRow, dropCol, friendly, board) => {
@@ -199,7 +244,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
   let current;
   // check drop row for collision left of king
   for (let col = dropCol - 1; col >= 0; col--) {
-    current = board[dropRow][col];
+    current = board[dropRow] && board[dropRow][col];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -208,7 +253,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
   }
   // check drop row for collision right of king
   for (let col = dropCol + 1; col < board[0].length; col++) {
-    current = board[dropRow][col];
+    current = board[dropRow] && board[dropRow][col];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -216,8 +261,8 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
     }
   }
   // check drop column for collision above king
-  for (let row = dropRow + 1; row <= 0; row--) {
-    current = board[row][dropCol];
+  for (let row = dropRow - 1; row >= 0; row--) {
+    current = board[row] && board[row][dropCol];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -226,7 +271,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
   }
   // check frop column for collision below king
   for (let row = dropRow + 1; row < board.length; row++) {
-    current = board[row][dropCol];
+    current = board[row] && board[row][dropCol];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -260,7 +305,7 @@ const inBishopRange = (dropRow, dropCol, friendly, board) => {
   let current;
 
   for (let row = dropRow - 1, col = dropCol - 1; row >= 0; row--, col--) {
-    current = board[row][col];
+    current = board[row] && board[row][col];
     if (current && current.type === "bishop" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -269,7 +314,7 @@ const inBishopRange = (dropRow, dropCol, friendly, board) => {
   }
 
   for (let row = dropRow - 1, col = dropCol + 1; row >= 0; row--, col++) {
-    current = board[row][col];
+    current = board[row] && board[row][col];
     if (current && current.type === "bishop" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -282,7 +327,7 @@ const inBishopRange = (dropRow, dropCol, friendly, board) => {
     row < board.length;
     row++, col--
   ) {
-    current = board[row][col];
+    current = board[row] && board[row][col];
     if (current && current.type === "bishop" && current.side !== friendly) {
       return true;
     } else if (current) {
@@ -295,7 +340,7 @@ const inBishopRange = (dropRow, dropCol, friendly, board) => {
     row < board.length;
     row++, col++
   ) {
-    current = board[row][col];
+    current = board[row] && board[row][col];
     if (current && current.type === "bishop" && current.side !== friendly) {
       return true;
     } else if (current) {

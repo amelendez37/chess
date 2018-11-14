@@ -33,12 +33,15 @@ const onDropHandler = (
     enemy = board[dropRow][dropCol].side;
   }
 
+  // check if move is valid
   if (
     isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board, turn)
   ) {
     updatePiecePositions(row, col, dropRow, dropCol);
     updateTurn();
   }
+
+  // checkForWinner();
 };
 
 const Tile = ({

@@ -33,7 +33,7 @@ const Results = ({ turn }) => (
 );
 
 Results.propTypes = {
-  turn: PropTypes.bool.isRequired
+  turn: PropTypes.number.isRequired
 };
 
 export default Results;
