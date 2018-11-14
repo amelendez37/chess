@@ -4,6 +4,7 @@ import Styled from "styled-components";
 const Container = Styled.div`
   text-align: center;
   font-size: 5rem;
+  font-family: Arial Unicode MS;
   &:hover {
     cursor: pointer;
   }

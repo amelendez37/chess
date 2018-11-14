@@ -17,10 +17,19 @@ export const isValidMove = (
   type,
   friendly,
   enemy,
-  board
+  board,
+  turn
 ) => {
   // check that piece is not landing on a friendly
   if (friendly === enemy) {
+    return false;
+  }
+
+  // check that only pieces can be moved if it's that side's turn
+  if (
+    (friendly === "white" && turn % 2 === 1) ||
+    (friendly === "black" && turn % 2 === 0)
+  ) {
     return false;
   }
 

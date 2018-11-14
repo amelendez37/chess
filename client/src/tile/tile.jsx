@@ -14,7 +14,15 @@ const onDragOverHandler = e => {
   e.preventDefault();
 };
 
-const onDropHandler = (e, dropRow, dropCol, updatePiecePositions, board) => {
+const onDropHandler = (
+  e,
+  dropRow,
+  dropCol,
+  updatePiecePositions,
+  board,
+  updateTurn,
+  turn
+) => {
   let enemy;
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
@@ -25,14 +33,28 @@ const onDropHandler = (e, dropRow, dropCol, updatePiecePositions, board) => {
     enemy = board[dropRow][dropCol].side;
   }
 
-  if (isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board)) {
+  if (
+    isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board, turn)
+  ) {
     updatePiecePositions(row, col, dropRow, dropCol);
+    updateTurn();
   }
 };
 
-const Tile = ({ Piece, color, row, col, updatePiecePositions, board }) => (
+const Tile = ({
+  Piece,
+  color,
+  row,
+  col,
+  updatePiecePositions,
+  board,
+  updateTurn,
+  turn
+}) => (
   <Container
-    onDrop={e => onDropHandler(e, row, col, updatePiecePositions, board)}
+    onDrop={e =>
+      onDropHandler(e, row, col, updatePiecePositions, board, updateTurn, turn)
+    }
     onDragOver={e => onDragOverHandler(e)}
     data-row={row}
     data-col={col}
@@ -48,7 +70,9 @@ Tile.propTypes = {
   row: PropTypes.number.isRequired,
   col: PropTypes.number.isRequired,
   updatePiecePositions: PropTypes.func.isRequired,
-  board: PropTypes.array.isRequired
+  board: PropTypes.array.isRequired,
+  updateTurn: PropTypes.func.isRequired,
+  turn: PropTypes.number.isRequired
 };
 
 export default Tile;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Styled from "styled-components";
+import PropTypes from "prop-types";
 
 import Tile from "../tile/tile.jsx";
 import {
@@ -116,6 +117,8 @@ class Board extends Component {
               color={this.determineTileColor(i, j)}
               updatePiecePositions={this.updatePiecePositions}
               board={this.state.board}
+              updateTurn={this.props.updateTurn}
+              turn={this.props.turn}
             />
           ))
         )}
@@ -123,5 +126,10 @@ class Board extends Component {
     );
   }
 }
+
+Board.propTypes = {
+  updateTurn: PropTypes.func.isRequired,
+  turn: PropTypes.number.isRequired
+};
 
 export default Board;
