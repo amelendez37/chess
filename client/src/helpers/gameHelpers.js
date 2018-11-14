@@ -78,23 +78,38 @@ const isValidKnightMove = (row, col, dropRow, dropCol) => {
   return (rowShift == 2 && colShift == 1) || (rowShift == 1 && colShift == 2);
 };
 
-const isValidPawnMove = (row, col, dropRow, dropCol, friendly, enemy) => {
+const isValidPawnMove = (
+  row,
+  col,
+  dropRow,
+  dropCol,
+  friendly,
+  enemy,
+  board
+) => {
+  const rowShift = Math.abs(dropRow - row);
   const colShift = Math.abs(dropCol - col);
   let validDirection;
-  let validMove;
 
   // set validDirection based on pawn side
   if (friendly == "white") {
-    validDirection = dropRow - row == -1;
+    validDirection = dropRow - row < 0;
   } else {
-    validDirection = dropRow - row == 1;
+    validDirection = dropRow - row > 0;
   }
 
-  if (colShift == 0 || (colShift == 1 && enemy)) {
-    validMove = true;
-  }
+  // allow movement of 2 spaces if first move
+  const validDouble = rowShift === 2 && board[row][col].moves === 0;
+  const validSingle =
+    rowShift == 1 && (colShift === 0 || (colShift === 1 && enemy));
 
-  return validDirection && validMove;
+  if (validDirection && (validDouble || validSingle)) {
+    // increment moves pawn has made
+    board[row][col].moves += 1;
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const isValidDiagonalMove = (row, col, dropRow, dropCol, board) => {

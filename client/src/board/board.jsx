@@ -46,7 +46,12 @@ class Board extends Component {
       board.push([]);
       for (let j = 0; j < 8; j++) {
         if (i == 1) {
-          board[i].push({ piece: BLACK_PAWN, side: "black", type: "pawn" });
+          board[i].push({
+            piece: BLACK_PAWN,
+            side: "black",
+            type: "pawn",
+            moves: 0
+          });
         } else if (i == 0 && (j == 0 || j == 7)) {
           board[i].push({ piece: BLACK_ROOK, side: "black", type: "rook" });
         } else if (i == 0 && (j == 1 || j == 6)) {
@@ -58,7 +63,12 @@ class Board extends Component {
         } else if (i == 0 && j == 4) {
           board[i].push({ piece: BLACK_KING, side: "black", type: "king" });
         } else if (i == 6) {
-          board[i].push({ piece: WHITE_PAWN, side: "white", type: "pawn" });
+          board[i].push({
+            piece: WHITE_PAWN,
+            side: "white",
+            type: "pawn",
+            moves: 0
+          });
         } else if (i == 7 && (j == 0 || j == 7)) {
           board[i].push({ piece: WHITE_ROOK, side: "white", type: "rook" });
         } else if (i == 7 && (j == 1 || j == 6)) {
