@@ -178,7 +178,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
     current = board[dropRow][col];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
-    } else if (current && current.side === friendly) {
+    } else if (current) {
       break;
     }
   }
@@ -187,7 +187,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
     current = board[dropRow][col];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
-    } else if (current && current.side === friendly) {
+    } else if (current) {
       break;
     }
   }
@@ -196,7 +196,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
     current = board[row][dropCol];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
-    } else if (current && current.side === friendly) {
+    } else if (current) {
       break;
     }
   }
@@ -205,7 +205,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
     current = board[row][dropCol];
     if (current && current.type === "rook" && current.side !== friendly) {
       return true;
-    } else if (current && current.side === friendly) {
+    } else if (current) {
       break;
     }
   }
@@ -215,6 +215,7 @@ const inRookRange = (dropRow, dropCol, friendly, board) => {
 
 const inKnightRange = (dropRow, dropCol, friendly, board) => {
   const knightPositions = [];
+
   // keep track of possible enemy knight positions
   knightPositions.push(board[dropRow - 2] && board[dropRow - 2][dropCol - 1]);
   knightPositions.push(board[dropRow - 2] && board[dropRow - 2][dropCol + 1]);
@@ -224,6 +225,7 @@ const inKnightRange = (dropRow, dropCol, friendly, board) => {
   knightPositions.push(board[dropRow + 2] && board[dropRow + 2][dropCol + 1]);
   knightPositions.push(board[dropRow + 1] && board[dropRow + 1][dropCol - 2]);
   knightPositions.push(board[dropRow + 1] && board[dropRow + 1][dropCol + 2]);
+
   // check that any of the positions contain an enemy knight
   return knightPositions.some(
     spot => spot && spot.type === "knight" && spot.side !== friendly
@@ -231,5 +233,51 @@ const inKnightRange = (dropRow, dropCol, friendly, board) => {
 };
 
 const inBishopRange = (dropRow, dropCol, friendly, board) => {
+  let current;
+
+  for (let row = dropRow - 1, col = dropCol - 1; row >= 0; row--, col--) {
+    current = board[row][col];
+    if (current && current.type === "bishop" && current.side !== friendly) {
+      return true;
+    } else if (current) {
+      break;
+    }
+  }
+
+  for (let row = dropRow - 1, col = dropCol + 1; row >= 0; row--, col++) {
+    current = board[row][col];
+    if (current && current.type === "bishop" && current.side !== friendly) {
+      return true;
+    } else if (current) {
+      break;
+    }
+  }
+
+  for (
+    let row = dropRow + 1, col = dropCol - 1;
+    row < board.length;
+    row++, col--
+  ) {
+    current = board[row][col];
+    if (current && current.type === "bishop" && current.side !== friendly) {
+      return true;
+    } else if (current) {
+      break;
+    }
+  }
+
+  for (
+    let row = dropRow + 1, col = dropCol + 1;
+    row < board.length;
+    row++, col++
+  ) {
+    current = board[row][col];
+    if (current && current.type === "bishop" && current.side !== friendly) {
+      return true;
+    } else if (current) {
+      break;
+    }
+  }
+
   return false;
 };
