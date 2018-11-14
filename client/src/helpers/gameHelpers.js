@@ -141,7 +141,7 @@ const isValidLinearMove = (row, col, dropRow, dropCol, board) => {
 };
 
 /**
- * Checks whether the drop position would expose king to attack from pawns or enemy king
+ * Following four functions are used to ensure a king cannot move itself into check
  */
 const inPawnKingRange = (dropRow, dropCol, friendly, board) => {
   // check that no spots surrounding drop are in range of enemy king
@@ -172,6 +172,44 @@ const inPawnKingRange = (dropRow, dropCol, friendly, board) => {
 };
 
 const inRookRange = (dropRow, dropCol, friendly, board) => {
+  let current;
+  // check drop row for collision left of king
+  for (let col = dropCol - 1; col >= 0; col--) {
+    current = board[dropRow][col];
+    if (current && current.type === "rook" && current.side !== friendly) {
+      return true;
+    } else if (current && current.side === friendly) {
+      break;
+    }
+  }
+  // check drop row for collision right of king
+  for (let col = dropCol + 1; col < board[0].length; col++) {
+    current = board[dropRow][col];
+    if (current && current.type === "rook" && current.side !== friendly) {
+      return true;
+    } else if (current && current.side === friendly) {
+      break;
+    }
+  }
+  // check drop column for collision above king
+  for (let row = dropRow + 1; row <= 0; row--) {
+    current = board[row][dropCol];
+    if (current && current.type === "rook" && current.side !== friendly) {
+      return true;
+    } else if (current && current.side === friendly) {
+      break;
+    }
+  }
+  // check frop column for collision below king
+  for (let row = dropRow + 1; row < board.length; row++) {
+    current = board[row][dropCol];
+    if (current && current.type === "rook" && current.side !== friendly) {
+      return true;
+    } else if (current && current.side === friendly) {
+      break;
+    }
+  }
+
   return false;
 };
 
