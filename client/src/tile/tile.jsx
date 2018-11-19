@@ -21,17 +21,14 @@ const onDropHandler = (
   updatePiecePositions,
   board,
   updateTurn,
-  turn
+  turn,
+  checkForWinner
 ) => {
-  let enemy;
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
   const type = board[row][col].type;
   const friendly = board[row][col].side;
-
-  if (board[dropRow][dropCol]) {
-    enemy = board[dropRow][dropCol].side;
-  }
+  const enemy = board[dropRow][dropCol] && board[dropRow][dropCol].side;
 
   // check if move is valid
   if (
@@ -41,7 +38,7 @@ const onDropHandler = (
     updateTurn();
   }
 
-  // checkForWinner();
+  checkForWinner(friendly === "white" ? "black" : "white", board);
 };
 
 const Tile = ({
@@ -52,11 +49,21 @@ const Tile = ({
   updatePiecePositions,
   board,
   updateTurn,
-  turn
+  turn,
+  checkForWinner
 }) => (
   <Container
     onDrop={e =>
-      onDropHandler(e, row, col, updatePiecePositions, board, updateTurn, turn)
+      onDropHandler(
+        e,
+        row,
+        col,
+        updatePiecePositions,
+        board,
+        updateTurn,
+        turn,
+        checkForWinner
+      )
     }
     onDragOver={e => onDragOverHandler(e)}
     data-row={row}
@@ -75,7 +82,8 @@ Tile.propTypes = {
   updatePiecePositions: PropTypes.func.isRequired,
   board: PropTypes.array.isRequired,
   updateTurn: PropTypes.func.isRequired,
-  turn: PropTypes.number.isRequired
+  turn: PropTypes.number.isRequired,
+  checkForWinner: PropTypes.func.isRequired
 };
 
 export default Tile;

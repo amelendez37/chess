@@ -24,16 +24,17 @@ const WinnerText = Styled.p`
   margin: 0 auto;
 `;
 
-const Results = ({ turn }) => (
+const Results = ({ turn, winner }) => (
   <Container>
     <TurnIndicator color={turn % 2 === 1 ? onColor : offColor} />
-    <WinnerText>WINNER</WinnerText>
+    <WinnerText>{winner ? `${winner} wins!` : null}</WinnerText>
     <TurnIndicator color={turn % 2 === 0 ? onColor : offColor} />
   </Container>
 );
 
 Results.propTypes = {
-  turn: PropTypes.number.isRequired
+  turn: PropTypes.number.isRequired,
+  winner: PropTypes.string
 };
 
 export default Results;
