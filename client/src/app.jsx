@@ -22,10 +22,17 @@ class App extends Component {
     super(props);
     // white - even numbers
     // black - odd numbers
-    this.state = { turn: 0, winner: null };
+    this.state = {
+      turn: 0,
+      winner: null,
+      // time defaults to 15 minutes (ms)
+      whiteTime: 900000 / 1000,
+      blackTime: 2000 / 1000
+    };
 
     this.updateTurn = this.updateTurn.bind(this);
-    this.checkForWinner = this.checkForWinner.bind(this);
+    this.updateTime = this.updateTime.bind(this);
+    this.checkForCheckmate = this.checkForCheckmate.bind(this);
   }
 
   updateTurn() {
@@ -33,9 +40,31 @@ class App extends Component {
   }
 
   /**
+   * Updates timers and checks for winner based on time expiration
+   */
+  updateTime() {
+    if (this.state.turn % 2 === 0) {
+      const updatedWhiteTime = this.state.whiteTime - 1;
+      this.setState({ whiteTime: updatedWhiteTime });
+
+      // check for time running out
+      if (this.state.whiteTime <= 0) {
+        this.setState({ winner: "black" });
+      }
+    } else {
+      const updatedBlackTime = this.state.blackTime - 1;
+      this.setState({ blackTime: updatedBlackTime });
+
+      if (this.state.blackTime <= 0) {
+        this.setState({ winner: "white" });
+      }
+    }
+  }
+
+  /**
    * Checks if King on given side is in checkmate
    */
-  checkForWinner(side, board) {
+  checkForCheckmate(side, board) {
     const { kingRow, kingCol } = findKingPosition(side, board);
 
     // first see if king is in check or can move itself out of check
@@ -52,11 +81,18 @@ class App extends Component {
   render() {
     return (
       <Container>
-        <Results turn={this.state.turn} winner={this.state.winner} />
+        <Results
+          turn={this.state.turn}
+          winner={this.state.winner}
+          updateTime={this.updateTime}
+          whiteTime={this.state.whiteTime}
+          blackTime={this.state.blackTime}
+        />
         <Board
           updateTurn={this.updateTurn}
           turn={this.state.turn}
-          checkForWinner={this.checkForWinner}
+          checkForCheckmate={this.checkForCheckmate}
+          winner={this.state.winner}
         />
       </Container>
     );

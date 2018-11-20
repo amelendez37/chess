@@ -15,10 +15,21 @@ const Time = Styled.p`
   padding-top: 1.5rem;
 `;
 
-const Timer = ({ color, time }) => (
-  <Container color={color}>
-    <Time>{`${Math.floor(time / 60)}:${time % 60 || "00"}`}</Time>
-  </Container>
-);
+const Timer = ({ color, time }) => {
+  let minutes = Math.floor(time / 60);
+  let seconds = time % 60;
+
+  if (seconds < 9) {
+    seconds = "0" + seconds;
+  } else if (seconds < 0) {
+    seconds = "00";
+  }
+
+  return (
+    <Container color={color}>
+      <Time>{`${minutes}:${seconds}`}</Time>
+    </Container>
+  );
+};
 
 export default Timer;

@@ -119,7 +119,8 @@ class Board extends Component {
               board={this.state.board}
               updateTurn={this.props.updateTurn}
               turn={this.props.turn}
-              checkForWinner={this.props.checkForWinner}
+              checkForCheckmate={this.props.checkForCheckmate}
+              winner={this.props.winner}
             />
           ))
         )}
@@ -131,7 +132,7 @@ class Board extends Component {
 Board.propTypes = {
   updateTurn: PropTypes.func.isRequired,
   turn: PropTypes.number.isRequired,
-  checkForWinner: PropTypes.func.isRequired
+  checkForCheckmate: PropTypes.func.isRequired
 };
 
 export default Board;
