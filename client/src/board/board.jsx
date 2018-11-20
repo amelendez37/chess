@@ -33,11 +33,19 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = { board: [] };
+
     this.updatePiecePositions = this.updatePiecePositions.bind(this);
   }
 
   componentDidMount() {
     this.setupBoardDefault();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // reset board when game gets reset
+    if (!nextProps.started) {
+      this.setupBoardDefault();
+    }
   }
 
   setupBoardDefault() {
@@ -121,6 +129,7 @@ class Board extends Component {
               turn={this.props.turn}
               checkForCheckmate={this.props.checkForCheckmate}
               winner={this.props.winner}
+              started={this.props.started}
             />
           ))
         )}
@@ -132,7 +141,8 @@ class Board extends Component {
 Board.propTypes = {
   updateTurn: PropTypes.func.isRequired,
   turn: PropTypes.number.isRequired,
-  checkForCheckmate: PropTypes.func.isRequired
+  checkForCheckmate: PropTypes.func.isRequired,
+  started: PropTypes.bool.isRequired
 };
 
 export default Board;

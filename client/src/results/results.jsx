@@ -29,17 +29,18 @@ class Results extends Component {
     this.state = { timer: null };
   }
 
-  componentDidMount() {
-    this.setState({ timer: setInterval(this.props.updateTime, 1000) });
-  }
-
   componentWillUnmount() {
     clearInterval(this.state.timer);
   }
 
-  componentWillUpdate() {
-    // stop timer if there's a winner
-    if (this.props.winner) {
+  componentWillReceiveProps(nextProps) {
+    // start timer when game starts
+    if (nextProps.started && !this.state.timer) {
+      this.setState({ timer: setInterval(this.props.updateTime, 1000) });
+    }
+
+    // stop timer if there's a winner or game was reset
+    if (this.props.winner || !nextProps.started) {
       clearInterval(this.state.timer);
     }
   }
@@ -65,6 +66,7 @@ class Results extends Component {
 }
 
 Results.propTypes = {
+  started: PropTypes.bool.isRequired,
   turn: PropTypes.number.isRequired,
   whiteTime: PropTypes.number.isRequired,
   blackTime: PropTypes.number.isRequired,

@@ -3,6 +3,8 @@ import Styled from "styled-components";
 
 import Board from "./board/board.jsx";
 import Results from "./results/results.jsx";
+import StartButton from "./buttons/start.jsx";
+import ResetButton from "./buttons/reset.jsx";
 import {
   isKingInCheck,
   findKingPosition,
@@ -17,22 +19,48 @@ const Container = Styled.div`
   transform: translate(-50%, -50%);
 `;
 
+const ButtonContainers = Styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 8rem;
+`;
+
 class App extends Component {
   constructor(props) {
     super(props);
-    // white - even numbers
-    // black - odd numbers
     this.state = {
+      // has the game started
+      started: false,
+      // white turn - even numbers
+      // black turn - odd numbers
       turn: 0,
       winner: null,
       // time defaults to 15 minutes (ms)
       whiteTime: 900000 / 1000,
-      blackTime: 2000 / 1000
+      blackTime: 900000 / 1000
     };
 
     this.updateTurn = this.updateTurn.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.checkForCheckmate = this.checkForCheckmate.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.resetGame = this.resetGame.bind(this);
+  }
+
+  startGame() {
+    if (!this.state.started) {
+      this.setState({ started: true });
+    }
+  }
+
+  resetGame() {
+    this.setState({
+      started: false,
+      turn: 0,
+      winner: null,
+      whiteTime: 900000 / 1000,
+      blackTime: 900000 / 1000
+    });
   }
 
   updateTurn() {
@@ -82,6 +110,7 @@ class App extends Component {
     return (
       <Container>
         <Results
+          started={this.state.started}
           turn={this.state.turn}
           winner={this.state.winner}
           updateTime={this.updateTime}
@@ -93,7 +122,12 @@ class App extends Component {
           turn={this.state.turn}
           checkForCheckmate={this.checkForCheckmate}
           winner={this.state.winner}
+          started={this.state.started}
         />
+        <ButtonContainers>
+          <StartButton text={"Start"} startGame={this.startGame} />
+          <ResetButton text={"Reset"} resetGame={this.resetGame} />
+        </ButtonContainers>
       </Container>
     );
   }

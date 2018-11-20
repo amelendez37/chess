@@ -13,6 +13,7 @@ const Time = Styled.p`
   font-size: 5rem;
   text-align: center;
   padding-top: 1.5rem;
+  font-family: Arial;
 `;
 
 const Timer = ({ color, time }) => {

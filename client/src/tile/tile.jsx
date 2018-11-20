@@ -23,7 +23,8 @@ const onDropHandler = (
   updateTurn,
   turn,
   checkForCheckmate,
-  winner
+  winner,
+  started
 ) => {
   const row = e.dataTransfer.getData("row");
   const col = e.dataTransfer.getData("col");
@@ -32,7 +33,7 @@ const onDropHandler = (
   const enemy = board[dropRow][dropCol] && board[dropRow][dropCol].side;
 
   // stop if there is already a winner
-  if (winner) {
+  if (winner || !started) {
     return;
   }
 
@@ -57,7 +58,8 @@ const Tile = ({
   updateTurn,
   turn,
   checkForCheckmate,
-  winner
+  winner,
+  started
 }) => (
   <Container
     onDrop={e =>
@@ -70,7 +72,8 @@ const Tile = ({
         updateTurn,
         turn,
         checkForCheckmate,
-        winner
+        winner,
+        started
       )
     }
     onDragOver={e => onDragOverHandler(e)}
@@ -92,7 +95,8 @@ Tile.propTypes = {
   updateTurn: PropTypes.func.isRequired,
   turn: PropTypes.number.isRequired,
   checkForCheckmate: PropTypes.func.isRequired,
-  winner: PropTypes.string
+  winner: PropTypes.string,
+  started: PropTypes.bool.isRequired
 };
 
 export default Tile;
