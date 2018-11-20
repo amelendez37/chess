@@ -3,7 +3,6 @@ import Styled from "styled-components";
 
 import Board from "./board/board.jsx";
 import Results from "./results/results.jsx";
-import Timer from "./timer/timer.jsx";
 import {
   isKingInCheck,
   findKingPosition,
@@ -12,7 +11,6 @@ import {
 
 const Container = Styled.div`
   display: flex;
-  justify-content: space-around;
   position: relative;
   top: 50vh;
   left: 50vw;
@@ -60,7 +58,6 @@ class App extends Component {
           turn={this.state.turn}
           checkForWinner={this.checkForWinner}
         />
-        <Timer />
       </Container>
     );
   }
