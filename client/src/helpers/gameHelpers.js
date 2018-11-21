@@ -18,7 +18,8 @@ export const isValidMove = (
   friendly,
   enemy,
   board,
-  turn
+  turn,
+  updatePiecePositions
 ) => {
   // check that piece is not landing on a friendly
   if (friendly === enemy) {
@@ -35,7 +36,14 @@ export const isValidMove = (
 
   switch (type) {
     case "king":
-      return isValidKingMove(row, col, dropRow, dropCol, board);
+      return isValidKingMove(
+        row,
+        col,
+        dropRow,
+        dropCol,
+        board,
+        updatePiecePositions
+      );
     case "queen":
       return isValidQueenMove(row, col, dropRow, dropCol, friendly, board);
     case "rook":
@@ -49,7 +57,15 @@ export const isValidMove = (
   }
 };
 
-export const isValidKingMove = (row, col, dropRow, dropCol, board) => {
+export const isValidKingMove = (
+  row,
+  col,
+  dropRow,
+  dropCol,
+  board,
+  updatePiecePositions
+) => {
+  const king = board[row][col];
   const friendly = board[row][col].side;
   const enemy =
     board[dropRow] && board[dropRow][dropCol] && board[dropRow][dropCol].side;
@@ -68,7 +84,16 @@ export const isValidKingMove = (row, col, dropRow, dropCol, board) => {
   const x = Math.abs(dropRow - row);
   const y = Math.abs(dropCol - col);
 
-  return !attackableAtPos && (x + y == 1 || (x == 1 && y == 1));
+  if (
+    (!attackableAtPos && (x + y == 1 || (x == 1 && y == 1))) ||
+    (!attackableAtPos &&
+      isValidCastling(row, col, dropRow, dropCol, board, updatePiecePositions))
+  ) {
+    king.moves += 1;
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const isValidQueenMove = (row, col, dropRow, dropCol, friendly, board) =>
@@ -76,9 +101,26 @@ const isValidQueenMove = (row, col, dropRow, dropCol, friendly, board) =>
     isValidDiagonalMove(row, col, dropRow, dropCol, board)) &&
   !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
 
-const isValidRookMove = (row, col, dropRow, dropCol, friendly, board) =>
-  isValidLinearMove(row, col, dropRow, dropCol, board) &&
-  !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
+const isValidRookMove = (row, col, dropRow, dropCol, friendly, board) => {
+  const rook = board[row][col];
+  const validLinear = isValidLinearMove(row, col, dropRow, dropCol, board);
+  const isKingInCheck = wouldCauseKingCheck(
+    row,
+    col,
+    dropRow,
+    dropCol,
+    friendly,
+    board
+  );
+
+  if (validLinear && !isKingInCheck) {
+    // increment rook moves
+    rook.moves += 1;
+    return true;
+  } else {
+    return false;
+  }
+};
 
 const isValidBishopMove = (row, col, dropRow, dropCol, friendly, board) =>
   isValidDiagonalMove(row, col, dropRow, dropCol, board) &&
@@ -117,9 +159,20 @@ const isValidPawnMove = (row, col, dropRow, dropCol, friendly, board) => {
     rowShift == 1 && (colShift === 0 || (colShift === 1 && enemy));
 
   if (validDirection && (validDouble || validSingle)) {
-    // increment moves pawn has made
-    board[row][col].moves += 1;
-    return !wouldCauseKingCheck(row, col, dropRow, dropCol, friendly, board);
+    const isKingInCheck = wouldCauseKingCheck(
+      row,
+      col,
+      dropRow,
+      dropCol,
+      friendly,
+      board
+    );
+
+    if (!isKingInCheck) {
+      // increment moves pawn has made
+      board[row][col].moves += 1;
+      return true;
+    }
   } else {
     return false;
   }
@@ -182,7 +235,6 @@ const wouldCauseKingCheck = (row, col, dropRow, dropCol, friendly, board) => {
   if (!board[dropRow]) {
     return true;
   }
-
   const boardCopy = board.map(row => row.slice(0));
 
   // stop if we'd be replacing a king
@@ -588,4 +640,60 @@ const inBishopQueenRange = (dropRow, dropCol, friendly, board) => {
   }
 
   return false;
+};
+
+/**
+ * Check if King and Rook are allowed to perform a 'castle'
+ */
+const isValidCastling = (
+  row,
+  col,
+  dropRow,
+  dropCol,
+  board,
+  updatePiecePositions
+) => {
+  const rowShift = Math.abs(dropRow - row);
+  const colShift = Math.abs(dropCol - col);
+
+  // check that the king is being moved 2 columns
+  if (rowShift > 0 || colShift !== 2) {
+    return false;
+  }
+
+  const rookDirection = dropCol - col === 2 ? "right" : "left";
+  const rookCol = rookDirection === "right" ? 7 : 0;
+  const king = board[row][col];
+  const rook = board[row][rookCol];
+
+  // check that both the rook and king have not moved before
+  if (king.moves || rook.moves) {
+    return false;
+  }
+
+  // check that there are no pieces between rook and king
+  // check that the king would not be moving through a check
+  if (rookDirection === "right") {
+    for (let i = col + 1; i < board.length - 1; i++) {
+      if (board[row][i] || !isValidKingMove(row, col, row, i, board)) {
+        return false;
+      }
+    }
+  } else {
+    for (let i = col - 1; i > 1; i--) {
+      if (board[row][i] || !isValidKingMove(row, col, row, i, board)) {
+        return false;
+      }
+    }
+  }
+
+  // move castle to appropriate position
+  updatePiecePositions(
+    row,
+    rookCol,
+    row,
+    rookDirection === "right" ? dropCol - 1 : dropCol + 1
+  );
+
+  return true;
 };

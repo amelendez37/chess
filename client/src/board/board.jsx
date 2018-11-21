@@ -51,6 +51,7 @@ class Board extends Component {
   setupBoardDefault() {
     const board = [];
 
+    // some pieces have a 'move' property for determing validity of certain moves such as castling
     for (let i = 0; i < 8; i++) {
       board.push([]);
       for (let j = 0; j < 8; j++) {
@@ -62,7 +63,12 @@ class Board extends Component {
             moves: 0
           });
         } else if (i == 0 && (j == 0 || j == 7)) {
-          board[i].push({ piece: BLACK_ROOK, side: "black", type: "rook" });
+          board[i].push({
+            piece: BLACK_ROOK,
+            side: "black",
+            type: "rook",
+            moves: 0
+          });
         } else if (i == 0 && (j == 1 || j == 6)) {
           board[i].push({ piece: BLACK_KNIGHT, side: "black", type: "knight" });
         } else if (i == 0 && (j == 2 || j == 5)) {
@@ -70,7 +76,12 @@ class Board extends Component {
         } else if (i == 0 && j == 3) {
           board[i].push({ piece: BLACK_QUEEN, side: "black", type: "queen" });
         } else if (i == 0 && j == 4) {
-          board[i].push({ piece: BLACK_KING, side: "black", type: "king" });
+          board[i].push({
+            piece: BLACK_KING,
+            side: "black",
+            type: "king",
+            moves: 0
+          });
         } else if (i == 6) {
           board[i].push({
             piece: WHITE_PAWN,
@@ -79,7 +90,12 @@ class Board extends Component {
             moves: 0
           });
         } else if (i == 7 && (j == 0 || j == 7)) {
-          board[i].push({ piece: WHITE_ROOK, side: "white", type: "rook" });
+          board[i].push({
+            piece: WHITE_ROOK,
+            side: "white",
+            type: "rook",
+            moves: 0
+          });
         } else if (i == 7 && (j == 1 || j == 6)) {
           board[i].push({ piece: WHITE_KNIGHT, side: "white", type: "knight" });
         } else if (i == 7 && (j == 2 || j == 5)) {
@@ -87,7 +103,12 @@ class Board extends Component {
         } else if (i == 7 && j == 3) {
           board[i].push({ piece: WHITE_QUEEN, side: "white", type: "queen" });
         } else if (i == 7 && j == 4) {
-          board[i].push({ piece: WHITE_KING, side: "white", type: "king" });
+          board[i].push({
+            piece: WHITE_KING,
+            side: "white",
+            type: "king",
+            moves: 0
+          });
         } else {
           board[i].push(null);
         }

@@ -26,8 +26,8 @@ const onDropHandler = (
   winner,
   started
 ) => {
-  const row = e.dataTransfer.getData("row");
-  const col = e.dataTransfer.getData("col");
+  const row = +e.dataTransfer.getData("row");
+  const col = +e.dataTransfer.getData("col");
   const type = board[row][col].type;
   const friendly = board[row][col].side;
   const enemy = board[dropRow][dropCol] && board[dropRow][dropCol].side;
@@ -39,7 +39,18 @@ const onDropHandler = (
 
   // check if move is valid
   if (
-    isValidMove(row, col, dropRow, dropCol, type, friendly, enemy, board, turn)
+    isValidMove(
+      row,
+      col,
+      dropRow,
+      dropCol,
+      type,
+      friendly,
+      enemy,
+      board,
+      turn,
+      updatePiecePositions
+    )
   ) {
     updatePiecePositions(row, col, dropRow, dropCol);
     updateTurn();
